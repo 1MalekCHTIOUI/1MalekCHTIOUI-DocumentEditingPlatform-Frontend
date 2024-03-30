@@ -1,0 +1,3 @@
+.NgxEditor__Content {
+  border-radius: 0; /* make all of the editor area clickable */
+}
