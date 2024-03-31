@@ -11,7 +11,10 @@ export const selectToken = createSelector(
   (state) => state.token
 );
 
-export const selectUser = createSelector(selectAuthState, (state) => state);
+export const selectUser = createSelector(
+  selectAuthState,
+  (state) => state.user
+);
 
 export const selectIsLoggedIn = createSelector(selectToken, (token) => !!token);
 
@@ -19,7 +22,10 @@ export const selectLoading = createSelector(
   selectAuthState,
   (state) => state.loading
 );
-
+export const selectIsAuthenticated = createSelector(
+  selectAuthState,
+  (state) => state.isAuthenticated
+);
 export const selectError = createSelector(
   selectAuthState,
   (state) => state.error

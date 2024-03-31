@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { SERVER_URL } from 'environment/environment';
 import { Observable } from 'rxjs';
 
@@ -7,16 +8,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<any> {
-    console.log(SERVER_URL);
-    console.log('SERVER_URL');
-
     return this.http.post<User>(`${SERVER_URL}/auth/login`, {
       username,
       password,
     });
+  }
+  logout(): void {
+    localStorage.removeItem('auth');
+    this.router.navigate(['/login']);
   }
 }
 class User {

@@ -1,5 +1,6 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,11 @@ import { DashboardSidebarComponent } from './components/dashboard-sidebar/dashbo
 import { DocumentComponent } from './components/document/document.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { dashboardReducer } from './store/reducers/dash.reducer';
+import { ToastModule } from 'primeng/toast';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { MessageService } from 'primeng/api';
+import { DashboardEffects } from './store/effects/dash.effect';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>
@@ -40,19 +46,24 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ToastModule,
+    AvatarModule,
+    AvatarGroupModule,
     ReactiveFormsModule,
     NgxEditorModule,
     StoreModule.forRoot(
       { auth: authReducer, dashboard: dashboardReducer },
       { metaReducers }
     ),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, DashboardEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

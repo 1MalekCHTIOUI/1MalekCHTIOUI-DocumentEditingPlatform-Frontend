@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import * as AuthActions from '../actions/auth.action';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -17,6 +18,7 @@ export class AuthEffects {
             AuthActions.loginSuccess({
               token: response.token,
               user: {
+                _id: response._id,
                 username: response.username,
                 password: response.password,
               },
@@ -27,22 +29,20 @@ export class AuthEffects {
       )
     )
   );
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          this.authService.logout();
+        })
+      ),
+    { dispatch: false }
+  );
 
-  //   logout$ = createEffect(() =>
-  //     this.actions$.pipe(
-  //       ofType(AuthActions.logout),
-  //       mergeMap(() =>
-  //         this.authService.logout().pipe(
-  //           map(() => {
-  //             // clear storage and state on successful logout
-  //             localStorage.removeItem('token');
-  //             return { type: '[No action]' }; // trigger re-evaluation of state
-  //           }),
-  //           catchError((error) => of(loginFailure({ error })))
-  //         )
-  //       )
-  //     )
-  //   );
-
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 }

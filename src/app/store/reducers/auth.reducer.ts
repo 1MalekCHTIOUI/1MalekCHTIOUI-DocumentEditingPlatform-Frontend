@@ -11,6 +11,7 @@ export interface AuthState {
   user: any | null;
   loading: boolean;
   error: any | null;
+  isAuthenticated: boolean;
 }
 
 export const initialState: AuthState = {
@@ -18,6 +19,7 @@ export const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
+  isAuthenticated: false,
 };
 
 export const authReducer = createReducer(
@@ -29,6 +31,7 @@ export const authReducer = createReducer(
     user,
     loading: false,
     error: null,
+    isAuthenticated: true,
   })),
   on(loginFailure, (state, { error }) => ({
     ...state,
